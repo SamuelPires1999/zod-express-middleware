@@ -6,5 +6,6 @@ validate our request body in express, but it could work with any type of rest fr
 To run this application just do the following:
 
 - Run `npm install` or `yarn`
+- Run the ```start:dev``` command to start the project
 - Edit the `inputShape` object as you like
 - Send a POST request to the test URL and test your validation input
