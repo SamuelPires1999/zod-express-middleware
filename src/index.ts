@@ -1,30 +1,27 @@
-import Express, { Request, Response , json} from 'express';
+import Express, { Request, Response, json } from 'express';
 import z, { ZodError } from 'zod';
+import { createUserInput } from './inputs';
 
 const app = Express();
-app.use(json())
+app.use(json());
 
-
-const inputShape = z.object({
-  stringExample: z.string(),
-  numberExample: z.number(),
-});
-
-app.post('/string', (req: Request, res: Response) => {
+app.post('/createUser', (req: Request, res: Response) => {
   try {
-    inputShape.parse(req.body);
+    const data = createUserInput.parse(req.body);
+
+    // send the now validated data to your service / database handler
 
     return res.send({
-      message: 'Input validated succesfully',
+      data,
+      message: 'Input validated!!',
     });
   } catch (error) {
     if (error instanceof ZodError) {
-      return res.send({
-        errors: error.issues.map(error => `${error.message} on field: ${error.path[0]}`)
-      });
-    } else {
-      console.log('UNKNOWN ERROR');
+      return res.send(error);
     }
+    return res.status(500).send({
+      message: 'unknown error...',
+    });
   }
 });
 
